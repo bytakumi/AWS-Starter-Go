@@ -8,7 +8,7 @@ clean:
 	rm -rf ./bin
 
 deploy: clean build
-	sls deploy function -f $(function) --verbose
+	sls deploy function -f $(function) --verbose --stage $(stage)
 
 deploy_all: clean build
-	sls deploy --verbose
+	sls deploy --verbose --stage $(stage)

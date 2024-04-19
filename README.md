@@ -8,5 +8,5 @@ cp .env.template .env
 vim .env
 
 # Deploy
-make deploy_all
+make deploy_all stage=dev
 ```
