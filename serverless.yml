@@ -7,7 +7,7 @@ useDotenv: true
 # ============================
 provider:
   name: aws
-  profile: ${env:AWS_PROFILE, ''}  # .envからprofile名を取得
+  profile: ${self:service}-${opt:stage, 'dev'}  # AWSプロファイル名(例: aws-starter-go-dev)
   region: ap-northeast-1
   stage: "${opt:stage, 'dev'}"
   runtime: provided.al2

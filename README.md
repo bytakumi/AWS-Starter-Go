@@ -2,10 +2,12 @@
 
 ## Usage
 ```bash
-cp .env.template .env
 
-# Modify environment variables
-vim .env
+# AWS Credentials(~/.aws/credentials)にて、{service名}-{stage名} のProfileを設定します。
+# serivce=aws-starter-go, stage=dev の場合は、 aws-starter-go-dev のProfileが必要になります。
+#   -> service名は、serverless.ymlのserviceパラメーターに記載されています。
+#   -> stage名は、deploy時のコマンドで指定されます。
+vim ~/.aws/credentials
 
 # Deploy
 make deploy_all stage=dev
@@ -16,4 +18,3 @@ make deploy_all stage=dev
 - IAM Role
 - Lambda
 - DynamoDB
-
