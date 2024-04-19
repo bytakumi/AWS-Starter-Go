@@ -10,3 +10,10 @@ vim .env
 # Deploy
 make deploy_all stage=dev
 ```
+
+## Resources
+
+- IAM Role
+- Lambda
+- DynamoDB
+
