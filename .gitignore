@@ -1,0 +1,16 @@
+# Go Binary file
+bin/*
+
+.env
+node_modules/*
+.serverless/*
+
+# ビルドなどで生成されたファイル
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.zip
+.DS_Store

@@ -1,0 +1,64 @@
+service: aws-starter-go
+frameworkVersion: '3'
+useDotenv: true
+
+# ============================
+# Common
+# ============================
+provider:
+  name: aws
+  profile: ${env:AWS_PROFILE, ''}  # .envからprofile名を取得
+  region: ap-northeast-1
+  stage: "${opt:stage, 'dev'}"
+  runtime: provided.al2
+  iam:
+    role:
+      statements:
+        - Effect: Allow  # SSMからパラメータを取得するための権限
+          Action: "ssm:GetParameter"
+          Resource: "*"
+        - Effect: Allow  # DynamoDBを操作するための権限
+          Action: "dynamodb:*"
+          Resource: "*"
+        - Effect: Allow  # LambdaがVPCにアタッチするための権限
+          Action: 
+            - "ec2:CreateNetworkInterface"
+            - "ec2:DescribeNetworkInterfaces"
+            - "ec2:DeleteNetworkInterface"
+            - "ec2:AssignPrivateIpAddresses"
+            - "ec2:UnassignPrivateIpAddresses"
+          Resource: "*"
+
+package:
+  individually: true
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+# ============================
+# Lambda
+# ============================
+functions:
+  hello:
+    handler: bin/bootstrap
+    package:
+      artifact: bin/hello.zip
+
+# ============================
+# DynamoDB
+# ============================
+resources:
+  Resources:
+    waitlistTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${opt:stage, 'dev'}-hello
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
