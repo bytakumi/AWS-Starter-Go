@@ -1,0 +1,8 @@
+DependsOn: MyElasticIp
+Type: AWS::EC2::NatGateway
+Properties:
+  AllocationId: !GetAtt MyElasticIp.AllocationId
+  SubnetId: !Ref PublicSubnet
+  Tags:
+    - Key: Name
+      Value: ${self:service}-${self:provider.stage}-nat-gateway

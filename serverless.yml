@@ -58,6 +58,42 @@ resources:
     HelloWorldStateMachineLogGroup:  # NOTE: ステートマシンのロググループ名を指定する
       ${file(./serverless/loggroup/helloworldstatemachine.yml)}
 
+    # ============================
+    # VPC
+    # ============================
+    MyVPC:
+      ${file(./serverless/vpc/vpc.yml)}
+    MyInternetGateway:
+      ${file(./serverless/vpc/internet_gateway.yml)}
+    VPCGatewayAttachment:
+      ${file(./serverless/vpc/vpc_gateway_attachment.yml)}
+    MyElasticIp:
+      ${file(./serverless/vpc/my_elastic_ip.yml)}
+    MyNatGateway:
+      ${file(./serverless/vpc/my_nat_gateway.yml)}
+    # ============================
+    # VPC(Private Subnet)
+    # ============================
+    PrivateSubnet:
+      ${file(./serverless/vpc/private_subnet.yml)}
+    PrivateRouteTable:
+      ${file(./serverless/vpc/private_route_table.yml)}
+    PrivateRoute:
+      ${file(./serverless/vpc/private_route.yml)}
+    SubnetRouteTableAssociationPrivateSubnet:
+      ${file(./serverless/vpc/subnet_route_table_association_private.yml)}
+    # ============================
+    # VPC(Public Subnet)
+    # ============================
+    PublicSubnet:
+      ${file(./serverless/vpc/public_subnet.yml)}
+    PublicRouteTable:
+      ${file(./serverless/vpc/public_route_table.yml)}
+    PublicRoute:
+      ${file(./serverless/vpc/public_route.yml)}
+    SubnetRouteTableAssociationPublicSubnet:
+      ${file(./serverless/vpc/subnet_route_table_association_public.yml)}
+
 # ============================
 # Step Functions
 # ============================
