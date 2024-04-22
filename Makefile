@@ -4,6 +4,9 @@ build:
 	# app/hello
 	sh tools/go_build.sh hello
 
+	# app/hello2
+	sh tools/go_build.sh hello2
+
 clean:
 	rm -rf ./bin
 

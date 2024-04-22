@@ -29,6 +29,9 @@ provider:
             - "ec2:UnassignPrivateIpAddresses"
           Resource: "*"
 
+plugins:
+  - serverless-step-functions
+
 package:
   individually: true
   patterns:
@@ -57,12 +60,16 @@ functions:
     handler: bin/bootstrap
     package:
       artifact: bin/hello.zip
+  hello2:
+    handler: bin/bootstrap
+    package:
+      artifact: bin/hello2.zip
 
-# ============================
-# DynamoDB
-# ============================
 resources:
   Resources:
+    # ============================
+    # DynamoDB
+    # ============================
     waitlistTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -76,3 +83,59 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+    # ============================
+    # LogGroup
+    # ============================
+    HelloWorldStateMachineLogGroup:  # NOTE: ステートマシンのロググループ名を指定する
+      Type: AWS::Logs::LogGroup
+      Properties:
+        LogGroupName: "/aws/states/${self:service}-${opt:stage, 'dev'}-HelloWorld"  # NOTE: ステートマシンのロググループ名を指定する
+
+# ============================
+# Step Functions
+# ============================
+stepFunctions:
+  stateMachines:
+    HelloWorldSateMachine:  # NOTE: ステートマシン名を指定する
+      name: ${self:service}-${opt:stage, 'dev'}-HelloWorld  # NOTE: ステートマシン名を指定する
+      type: EXPRESS
+      # role: ""
+      loggingConfig:
+        level: ALL
+        includeExecutionData: true
+        destinations:
+          - Fn::GetAtt: [HelloWorldStateMachineLogGroup, Arn]  # NOTE: ステートマシンのロググループ名を指定する
+      events:
+        - http:
+            path: /helloworld  # NOTE: API Gatewayのパスを指定する
+            method: post
+            # iamRole: ""
+            integration: aws
+            action: StartSyncExecution
+            request:
+              template:  # NOTE: ステートマシン名を指定する
+                application/json: |
+                  {
+                    "input": "{\"payload\": $util.escapeJavaScript($input.json('$')), \"authorization\": \"$util.escapeJavaScript($input.params().header.get('Authorization'))\"}",
+                    "stateMachineArn":"arn:aws:states:${self:provider.region}:${aws:accountId}:stateMachine:${self:service}-${opt:stage, 'dev'}-helloworld",
+                  }
+            response:
+              template:
+                application/json: |
+                  #set($outputJson = $util.parseJson($input.json('$.output')))
+                  #set($context.responseOverride.status = $util.parseJson($outputJson).statusCode)
+                  $util.parseJson($outputJson).body
+      definition:
+        Comment: "For HelloWorld"  # NOTE: ステートマシンのコメントを指定する
+        StartAt: HelloWorld
+        States:
+          HelloWorld:
+            Type: Task
+            Next: HelloWorld2
+            Resource:
+              Fn::GetAtt: [hello, Arn]
+          HelloWorld2:
+            Type: Task
+            End: True
+            Resource:
+              Fn::GetAtt: [hello, Arn]
