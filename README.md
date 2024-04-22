@@ -20,4 +20,9 @@ make deploy_all stage=dev
 - DynamoDB
 - StepFunction
 - APIGateway
-- 
+- VPC
+  - Private Subnet
+    - NAT Gateway
+  - Public Subnet
+    - Internet Gateway
+  - Elastic IP
