@@ -18,7 +18,7 @@ events:
           application/json: |
             {
               "input": "{\"payload\": $util.escapeJavaScript($input.json('$')), \"authorization\": \"$util.escapeJavaScript($input.params().header.get('Authorization'))\"}",
-              "stateMachineArn":"arn:aws:states:${self:provider.region}:${aws:accountId}:stateMachine:${self:service}-${opt:stage, 'dev'}-helloworld",
+              "stateMachineArn":"arn:aws:states:${self:provider.region}:${aws:accountId}:stateMachine:${self:service}-${opt:stage, 'dev'}-HelloWorld"
             }
       response:
         template:
