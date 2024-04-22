@@ -18,3 +18,6 @@ make deploy_all stage=dev
 - IAM Role
 - Lambda
 - DynamoDB
+- StepFunction
+- APIGateway
+- 
