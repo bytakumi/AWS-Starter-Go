@@ -1,6 +1,6 @@
 name: ${self:service}-${opt:stage, 'dev'}-HelloWorld  # NOTE: ステートマシン名を指定する
 type: EXPRESS
-# role: ""
+# role: arn:aws:iam::${aws:accountId}:role/${self:service}-${opt:stage, 'dev'}-Role
 loggingConfig:
   level: ALL
   includeExecutionData: true
@@ -10,7 +10,7 @@ events:
   - http:
       path: /helloworld  # NOTE: API Gatewayのパスを指定する
       method: post
-      # iamRole: ""
+      # iamRole: arn:aws:iam::${aws:accountId}:role/${self:service}-${opt:stage, 'dev'}-Role
       integration: aws
       action: StartSyncExecution
       request:

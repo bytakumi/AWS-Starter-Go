@@ -1,0 +1,16 @@
+name: ${self:service}-${self:provider.stage}-LambdaRole
+statements:
+  - Effect: Allow  # LambdaがSSMからパラメータを取得するための権限
+    Action: "ssm:GetParameter"
+    Resource: "*"
+  - Effect: Allow  # LambdaがDynamoDBを操作するための権限
+    Action: "dynamodb:*"
+    Resource: "*"
+  - Effect: Allow  # LambdaがVPCにアタッチするための権限
+    Action: 
+      - "ec2:CreateNetworkInterface"
+      - "ec2:DescribeNetworkInterfaces"
+      - "ec2:DeleteNetworkInterface"
+      - "ec2:AssignPrivateIpAddresses"
+      - "ec2:UnassignPrivateIpAddresses"
+    Resource: "*"
