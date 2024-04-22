@@ -71,25 +71,13 @@ resources:
     # DynamoDB
     # ============================
     waitlistTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${opt:stage, 'dev'}-hello
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+      ${file(./serverless/dynamodb/waitlist.yml)}
+
     # ============================
     # LogGroup
     # ============================
     HelloWorldStateMachineLogGroup:  # NOTE: ステートマシンのロググループ名を指定する
-      Type: AWS::Logs::LogGroup
-      Properties:
-        LogGroupName: "/aws/states/${self:service}-${opt:stage, 'dev'}-HelloWorld"  # NOTE: ステートマシンのロググループ名を指定する
+      ${file(./serverless/loggroup/helloworldstatemachine.yml)}
 
 # ============================
 # Step Functions
