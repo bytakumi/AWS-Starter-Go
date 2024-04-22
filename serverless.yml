@@ -29,6 +29,9 @@ provider:
             - "ec2:UnassignPrivateIpAddresses"
           Resource: "*"
 
+plugins:
+  - serverless-step-functions
+
 package:
   individually: true
   patterns:
@@ -36,43 +39,43 @@ package:
     - ./bin/**
 
 # ============================
-# Stage
+# Stage parameters
 # ============================
 params:
   dev:
-    PARAM1: "開発環境用の値1"
-    PARAM2: "開発環境用の値2"
+    ${file(./serverless/param/dev.yml)}
   stg:
-    PARAM1: "ステージング環境用の値1"
-    PARAM2: "ステージング環境用の値2"
+    ${file(./serverless/param/stg.yml)}
   prd:
-    PARAM1: "本番環境用の値1"
-    PARAM2: "本番環境用の値2"
+    ${file(./serverless/param/prd.yml)}
 
 # ============================
 # Lambda
 # ============================
 functions:
   hello:
-    handler: bin/bootstrap
-    package:
-      artifact: bin/hello.zip
+    ${file(./serverless/function/hello.yml)}
+  hello2:
+    ${file(./serverless/function/hello2.yml)}
 
-# ============================
-# DynamoDB
-# ============================
 resources:
   Resources:
+    # ============================
+    # DynamoDB
+    # ============================
     waitlistTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${opt:stage, 'dev'}-hello
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+      ${file(./serverless/dynamodb/waitlist.yml)}
+
+    # ============================
+    # LogGroup
+    # ============================
+    HelloWorldStateMachineLogGroup:  # NOTE: ステートマシンのロググループ名を指定する
+      ${file(./serverless/loggroup/helloworldstatemachine.yml)}
+
+# ============================
+# Step Functions
+# ============================
+stepFunctions:
+  stateMachines:
+    HelloWorldSateMachine:  # NOTE: ステートマシン名を指定する
+      ${file(./serverless/stepfunction/helloworld.yml)}

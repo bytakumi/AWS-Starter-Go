@@ -1,0 +1,3 @@
+handler: bin/bootstrap
+package:
+  artifact: bin/hello2.zip
