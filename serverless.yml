@@ -7,7 +7,7 @@ useDotenv: true
 # ============================
 provider:
   name: aws
-  profile: ${self:service}-${opt:stage, 'dev'}  # AWSプロファイル名(例: aws-starter-go-dev)
+  profile: ${self:service}-${opt:stage, 'dev'}  # AWS Profile Name(e.g.: aws-starter-go-dev)
   region: ap-northeast-1
   stage: "${opt:stage, 'dev'}"
   runtime: provided.al2
@@ -55,7 +55,7 @@ resources:
     # ============================
     # LogGroup
     # ============================
-    HelloWorldStateMachineLogGroup:  # NOTE: ステートマシンのロググループ名を指定する
+    HelloWorldStateMachineLogGroup:  # NOTE: Specify the log group name for the state machine
       ${file(./serverless/loggroup/helloworldstatemachine.yml)}
 
     # ============================
@@ -99,5 +99,5 @@ resources:
 # ============================
 stepFunctions:
   stateMachines:
-    HelloWorldSateMachine:  # NOTE: ステートマシン名を指定する
+    HelloWorldSateMachine:  # NOTE: Specify the state machine name
       ${file(./serverless/stepfunction/helloworld.yml)}

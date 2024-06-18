@@ -18,11 +18,11 @@ func HandleRequest(ctx context.Context) (Response, error) {
         Message: "Hello, World!",
     }
 
-    // レスポンスボディを文字列に変換
+    // Convert response body to string
     responseBodyStr, err := json.Marshal(responseBody); if err != nil {
-        return Response{StatusCode: 500, Body: ""}, fmt.Errorf("レスポンスボディの文字列変換に失敗しました <- %v", err)
+        return Response{StatusCode: 500, Body: ""}, fmt.Errorf("Failed to convert response body to string <- %v", err)
     }
-    // レスポンスを返却する
+    // Return the response
     return Response{StatusCode: 200, Body: string(responseBodyStr)}, nil
 }
 

@@ -3,30 +3,30 @@
 ## File Tree
 ```
 .
-├── app              // Lambdaアプリケーション
-│   └── hello        // Lambda関数
+├── app              // Lambda
+│   └── hello        // Lambda functions
 │       └── main.go
-├── serverless       // IaC　インフラ定義
-│   ├── dynamodb     // DynamoDB関連
-│   ├── function     // Lambda関連
-│   ├── iam          // IAM/Role関連
-│   ├── loggroup     // CloudWatchLogs関連
-│   ├── param        // Stageごとのパラメーター関連
-│   ├── stepfunction // StepFunction関連
-│   └── vpc          // VPC関連
+├── serverless       // Infra
+│   ├── dynamodb     // DynamoDB
+│   ├── function     // Lambda
+│   ├── iam          // IAM/Role
+│   ├── loggroup     // CloudWatchLogs
+│   ├── param        // Stage Parameters
+│   ├── stepfunction // StepFunction
+│   └── vpc          // VPC
 ├── tools
-│   └── go_build.sh  // Goビルドツール
-├── Makefile         // Goビルドやデプロイコマンド
-└── serverless.yml   // sls定義
+│   └── go_build.sh  // Build tools
+├── Makefile         // Build/Deploy commands
+└── serverless.yml   // sls
 ```
 
 ## Usage
 ```bash
 
-# AWS Credentials(~/.aws/credentials)にて、{service名}-{stage名} のProfileを設定します。
-# serivce=aws-starter-go, stage=dev の場合は、 aws-starter-go-dev のProfileが必要になります。
-#   -> service名は、serverless.ymlのserviceパラメーターに記載されています。
-#   -> stage名は、deploy時のコマンドで指定されます。
+# Set up the profile in AWS Credentials (~/.aws/credentials) as {service-name}-{stage-name}.
+# For example, if service=aws-starter-go and stage=dev, the profile should be aws-starter-go-dev.
+#   -> The service name is specified in the service parameter in serverless.yml.
+#   -> The stage name is specified during the deploy command.
 vim ~/.aws/credentials
 
 # Deploy
